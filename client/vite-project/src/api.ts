@@ -14,6 +14,10 @@ export const employee = {
         return empRequest.post('', {name, salary})
         .then((res): employeeType[] => res.data)
     },
+    delete(id: string) {
+        return empRequest.delete(`/${id}`)
+        .then((res): employeeType[] => res.data)
+    },
     changeIncrease(id: string) {
         return empRequest.put(`/${id}`)
         .then((res): employeeType[] => res.data)

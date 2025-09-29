@@ -3,6 +3,7 @@ import Header from './components/Header'
 import type {empl} from './types/types'
 import { useAppDispatch,useAppSelector } from './store/storeConfig'
 import EmployerList from './components/Content/EmployerList'
+import Index from './components/Content/Index'
 import {getThunk, 
   selectEmployees } from './store/reducers/employeeSlice'
 
@@ -52,6 +53,7 @@ function App() {
     <div className='bg-stone-300 p-5'>
       <Header allEmpl={5} allIncreaseEmpl={3} />
       <EmployerList employees={employees!} />
+      <Index />
     </div>
   )
 }

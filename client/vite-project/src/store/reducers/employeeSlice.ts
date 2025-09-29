@@ -25,12 +25,21 @@ export const createThunk = createAsyncThunk<employeeType[], createEmployeeType>(
     }
 )
 
+export const deleteThunk = createAsyncThunk<employeeType[], string>(
+    'employee/deleteThunk',
+    async (id) => {
+        return await employee.delete(id)
+    }
+)
+
 export const changeIncreaseThunk = createAsyncThunk<employeeType[], string>(
     'employee/changeIncreaseThunk',
     async (id) => {
         return await employee.changeIncrease(id)
     }
 )
+
+const thunks = [getThunk, createThunk, deleteThunk, changeIncreaseThunk]
 
 const employeeSlice = createSlice({
     name: 'employee',
@@ -41,27 +50,19 @@ const employeeSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        // create employee
-            .addCase(createThunk.fulfilled, (state, action) => {
-                state.employees = action.payload
-            })
-            .addCase(createThunk.rejected, (state, action) => {
-                state.error = action.error.message 
-            } )
-        // get employees
-            .addCase(getThunk.fulfilled, (state, action) => {
-                state.employees = action.payload
-            })
-            .addCase(getThunk.rejected, (state, action) => {
-                state.error = action.error.message 
-            } )
-        // change increase
-            .addCase(changeIncreaseThunk.fulfilled, (state, action) => {
-                state.employees = action.payload
-            })
-            .addCase(changeIncreaseThunk.rejected, (state, action) => {
-                state.error = action.error.message 
-            } )
+            .addMatcher(
+                (action) => thunks.some(t => action.type === t.fulfilled.type),
+                (state, action) => {
+                    state.employees = (action as PayloadAction<employeeType[]>).payload
+                }
+            )
+
+            .addMatcher(
+                (action) => thunks.some(t => action.type === t.rejected.type),
+                (state, action) => {
+                    state.employees = (action as any).error.message
+                }
+            )
     }
 })
 
