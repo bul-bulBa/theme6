@@ -1,4 +1,3 @@
-import type {empl}  from '../../types/types'
 import type {employeeType} from '../../store/reducers/employeeSlice'
 import { changeIncreaseThunk, deleteThunk } from '../../store/reducers/employeeSlice'
 import { useAppDispatch } from '../../store/storeConfig'

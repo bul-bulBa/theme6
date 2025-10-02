@@ -6,4 +6,11 @@ const employeeSchema = new Schema({
     increase: {type: Boolean, default: false}
 })
 
+employeeSchema.index({name: 'text'})
+employeeSchema.index({salary: 1})
+employeeSchema.index( 
+    {increase: 1},
+    {partialFilterExpression: {promotion: true}}
+)
+
 module.exports = model('employee', employeeSchema)

@@ -1,15 +1,21 @@
 const employeeModel = require('../models/employee-model')
 const epmloyeesDto = require('../dto/employees-dto')
-const { deleteEmployee } = require('../controller/employee-controller')
 
 class employeeService {
 
-    async getEmployees() {
+    async getEmployees(increase, salary, name) {
+        let query = {}
 
-        const employees = await employeeModel.find({})
+        if(name)  query.$text = { $search: name}
+        if(salary) query.salary = { $gte: salary}
+        if(increase) query.increase = true
+
+        const employees = await employeeModel.find(query)
+        const length = await employeeModel.countDocuments({})
+        const increaseLength = await employeeModel.countDocuments({increase: true})
 
         const resultDto = employees.map(e => new epmloyeesDto(e))
-        return resultDto
+        return {employees: resultDto, length, increaseLength}
     }
 
     async createEmployee(name, salary) {

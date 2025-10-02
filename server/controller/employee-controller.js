@@ -12,8 +12,9 @@ class employeeController {
     }
     async getEmployees(req, res) {
         try {
+            // const {name, bigSalary, increase} = req.payload
 
-            const employees = await employeeService.getEmployees()
+            const employees = await employeeService.getEmployees(undefined, 0, '')
 
             res.json(employees)
         }catch(e) {
@@ -26,7 +27,7 @@ class employeeController {
             const {name, salary} = req.body 
 
             await employeeService.createEmployee(name, salary)
-            const employees = await employeeService.getEmployees()
+            const employees = await employeeService.getEmployees(undefined, 0, '')
 
             res.json(employees)
         }catch(e) {
@@ -39,7 +40,7 @@ class employeeController {
             const {id} = req.params
 
             await employeeService.deleteEmployee(id)
-            const employees = await employeeService.getEmployees()
+            const employees = await employeeService.getEmployees(undefined, 0, '')
 
             res.json(employees)
         }catch(e) {
@@ -52,7 +53,7 @@ class employeeController {
             const {id} = req.params
 
             await employeeService.changeIncrease(id)
-            const employees = await employeeService.getEmployees()
+            const employees = await employeeService.getEmployees(undefined, 0, '')
 
             res.json(employees)
         }catch(e) {
