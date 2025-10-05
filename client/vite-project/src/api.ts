@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { createEmployeeType, objFromDBType} from './store/reducers/employeeSlice'
+import type { createEmployeeType, objFromDBType, searchFormType} from './store/reducers/employeeSlice'
 
 export const EPORT = 'http://localhost:4000/api/employee'
 const empRequest = axios.create({
@@ -7,8 +7,8 @@ const empRequest = axios.create({
 })
 
 export const employee = {
-    get() {
-        return empRequest.get('').then((res): objFromDBType => res.data) 
+    get(values: searchFormType) {
+        return empRequest.get('', { params: {...values}}).then((res): objFromDBType => res.data) 
     },
     create({name, salary}: createEmployeeType) {
         return empRequest.post('', {name, salary})

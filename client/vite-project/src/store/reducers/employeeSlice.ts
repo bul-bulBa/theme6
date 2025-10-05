@@ -17,10 +17,16 @@ export type objFromDBType = {
     increaseLength: number
 }
 
-export const getThunk = createAsyncThunk<objFromDBType, void>(
+export type searchFormType = {
+    name: string,
+    salary: number,
+    increase: boolean
+}
+
+export const getThunk = createAsyncThunk<objFromDBType, searchFormType>(
     'employee/getThunk',
-    async () => {
-        return await employee.get()
+    async (values) => {
+        return await employee.get(values)
     }
 )
 
