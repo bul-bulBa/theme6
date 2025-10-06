@@ -4,6 +4,7 @@ import { useAppDispatch,useAppSelector } from './store/storeConfig'
 import EmployerList from './components/Content/EmployerList'
 import Index from './components/Content/Index'
 import Search from './components/Content/Search'
+import PaginationComponent from './components/Content/Pagination'
 import {getThunk, 
   selectEmployees } from './store/reducers/employeeSlice'
 
@@ -12,7 +13,7 @@ function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getThunk({name: '', salary: 0, increase: false}))
+    dispatch(getThunk({name: '', salary: 0, increase: false, page: 1}))
   }, [])
 
   if(employees === null) {
@@ -26,6 +27,7 @@ function App() {
       <Header />
       <Search />
       <EmployerList employees={employees!} />
+      <PaginationComponent />
       <Index />
     </div>
   )

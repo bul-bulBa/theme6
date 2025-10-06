@@ -1,9 +1,11 @@
 import { Formik, Form, useField } from 'formik'
-import { createThunk } from '../../store/reducers/employeeSlice'
-import { useAppDispatch } from '../../store/storeConfig'
+import { createThunk, selectPages } from '../../store/reducers/employeeSlice'
+import { selectSearch } from '../../store/reducers/searchSlice'
+import { useAppDispatch, useAppSelector } from '../../store/storeConfig'
 import * as yup from 'yup'
 import { Input } from "../ui/input"
 import { Button } from "@/components/ui/button"
+
 
 type initialValuesType = { name: string, salary: string }
 type propsType = {placeholder: string, name: string, type: string}
@@ -34,6 +36,8 @@ const validationSchema = yup.object().shape({
 })
 
 const Index = () => {
+    const pages = useAppSelector(selectPages)
+    const selectedSearch = useAppSelector(selectSearch)
     const dispatch = useAppDispatch()
     const initialValues: initialValuesType = { name: '', salary: '' }
 
@@ -43,7 +47,8 @@ const Index = () => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { setSubmitting }) => {
-                    await dispatch(createThunk(values))
+                    
+                    await dispatch(createThunk({...values, searchForm: {page: pages.currentPage, ...selectedSearch}}))
                     setSubmitting(false)
                 }}>
                 {({ isSubmitting }) => (

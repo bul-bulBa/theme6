@@ -9,19 +9,21 @@ export type employeeType = {
     salary: number,
     increase: boolean,    
 }
-export type createEmployeeType = {name: string, salary: string}
 
 export type objFromDBType = {
     employees: employeeType[]
     length: number,
-    increaseLength: number
+    increaseLength: number,
+    allPages: number
 }
 
 export type searchFormType = {
     name: string,
     salary: number,
-    increase: boolean
+    increase: boolean,
+    page: number
 }
+export type createEmployeeType = {name: string, salary: string, searchForm: searchFormType}
 
 export const getThunk = createAsyncThunk<objFromDBType, searchFormType>(
     'employee/getThunk',
@@ -37,17 +39,19 @@ export const createThunk = createAsyncThunk<objFromDBType, createEmployeeType>(
     }
 )
 
-export const deleteThunk = createAsyncThunk<objFromDBType, string>(
+export type deleteType = {id: string, searchForm: searchFormType}
+export const deleteThunk = createAsyncThunk<objFromDBType, deleteType>(
     'employee/deleteThunk',
-    async (id) => {
-        return await employee.delete(id)
+    async (values) => {
+        return await employee.delete(values)
     }
 )
 
-export const changeIncreaseThunk = createAsyncThunk<objFromDBType, string>(
+export type changeIncreaseType = {id: string, searchForm: searchFormType}
+export const changeIncreaseThunk = createAsyncThunk<objFromDBType, changeIncreaseType>(
     'employee/changeIncreaseThunk',
-    async (id) => {
-        return await employee.changeIncrease(id)
+    async (values) => {
+        return await employee.changeIncrease(values)
     }
 )
 
@@ -57,11 +61,17 @@ const employeeSlice = createSlice({
     name: 'employee',
     initialState: {
         employees: null as employeeType[] | null,
-        length: null as number | null,
-        increaseLength: null as number | null,
+        length: 0,
+        increaseLength: 0,
+        currentPage: 1,
+        allPages: 1,
         error: null as string | null | undefined
     },
-    reducers: {},
+    reducers: {
+        setPage(state, action: PayloadAction<number>) {
+            state.currentPage = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addMatcher(
@@ -70,6 +80,7 @@ const employeeSlice = createSlice({
                     state.employees = (action as PayloadAction<objFromDBType>).payload.employees
                     state.length = (action as PayloadAction<objFromDBType>).payload.length
                     state.increaseLength = (action as PayloadAction<objFromDBType>).payload.increaseLength
+                    state.allPages = (action as PayloadAction<objFromDBType>).payload.allPages
                 }
             )
 
@@ -86,5 +97,10 @@ export const selectEmployees = (state: stateType) => state.employee.employees
 export const selectAllLengths = (state: stateType) => ({
         length: state.employee.length, 
         increaseLength: state.employee.increaseLength})
+export const selectPages = (state: stateType) => ({
+    currentPage: state.employee.currentPage,
+    allPages: state.employee.allPages
+})
 
 export default employeeSlice.reducer
+export const { setPage } = employeeSlice.actions

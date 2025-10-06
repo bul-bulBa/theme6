@@ -5,13 +5,18 @@ import { useForm } from 'react-hook-form'
 import { useAppDispatch } from "@/store/storeConfig"
 import type {searchFormType} from '../../store/reducers/employeeSlice'
 import { getThunk } from "../../store/reducers/employeeSlice"
+import { setState } from '../../store/reducers/searchSlice'
 
 const Search = () => {
     const dispatch = useAppDispatch()
-    const { register, handleSubmit, setValue, watch} = useForm<searchFormType>({ defaultValues: { name: '', salary: 0, increase: false }})
+    const { register, handleSubmit, setValue, watch} = useForm<any>({ defaultValues: { name: '', salary: 0, increase: false }})
 
     const [increase, salary] = watch(['increase', 'salary'])
-    const submit = (values: searchFormType) => dispatch(getThunk(values))
+    const submit = (values: any) => {
+        const req: searchFormType = {...values, page: 1}
+        dispatch(setState(values))
+        dispatch(getThunk(req))
+    }
 
     return (
         <div className="container flex flex-col gap-4">

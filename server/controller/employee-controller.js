@@ -12,8 +12,8 @@ class employeeController {
     }
     async getEmployees(req, res) {
         try {
-            const {name, salary, increase} = req.query
-            const employees = await employeeService.getEmployees(name, salary, increase)
+            const {name, salary, increase, page} = req.query
+            const employees = await employeeService.getEmployees({name, salary, increase, page})
 
             res.json(employees)
         }catch(e) {
@@ -23,10 +23,10 @@ class employeeController {
     }
     async createEmployee(req, res) {
         try {
-            const {name, salary} = req.body 
+            const {name, salary, searchForm} = req.body 
 
             await employeeService.createEmployee(name, salary)
-            const employees = await employeeService.getEmployees( '', 0, undefined)
+            const employees = await employeeService.getEmployees(searchForm)
 
             res.json(employees)
         }catch(e) {
@@ -36,10 +36,10 @@ class employeeController {
     }
     async deleteEmployee(req,res) {
         try{
-            const {id} = req.params
+            const {id, searchForm} = req.body
 
             await employeeService.deleteEmployee(id)
-            const employees = await employeeService.getEmployees( '', 0, undefined)
+            const employees = await employeeService.getEmployees(searchForm)
 
             res.json(employees)
         }catch(e) {
@@ -49,10 +49,10 @@ class employeeController {
     }
     async changeIncrease(req, res) {
         try{
-            const {id} = req.params
+            const {id, searchForm} = req.body
 
             await employeeService.changeIncrease(id)
-            const employees = await employeeService.getEmployees( '', 0, undefined)
+            const employees = await employeeService.getEmployees(searchForm)
 
             res.json(employees)
         }catch(e) {
