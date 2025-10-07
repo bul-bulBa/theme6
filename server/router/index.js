@@ -5,6 +5,7 @@ const router = new Router
 
 router.get('/getHello', employeeController.hello)
 router.get('/employee', employeeController.getEmployees)
+router.get('/autoComplete', employeeController.autoComplete)
 
 router.post('/employee', employeeController.createEmployee)
 router.put('/employee', employeeController.changeIncrease)

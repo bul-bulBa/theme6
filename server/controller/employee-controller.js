@@ -60,6 +60,18 @@ class employeeController {
             res.json({error: e})
         }
     }
+
+    async autoComplete(req, res) {
+        try{
+            const name = req.query.name
+
+            const names = await employeeService.autoComplete(name)
+            res.json(names)
+        }catch(e) { 
+            console.log("ERROR ", e)
+            res.json({error: e})
+        }
+    }
 }
 
 module.exports = new employeeController

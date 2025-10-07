@@ -33,15 +33,15 @@ const PaginationComponent = () => {
         <div className="container">
             <Pagination>
                 <PaginationContent>
-                    <PaginationItem>
+                    {/* <PaginationItem>
                         <PaginationPrevious />
-                    </PaginationItem>
+                    </PaginationItem> */}
 
                     {items}
 
-                    <PaginationItem>
+                    {/* <PaginationItem>
                         <PaginationNext />
-                    </PaginationItem>
+                    </PaginationItem> */}
                 </PaginationContent>
             </Pagination>
         </div>

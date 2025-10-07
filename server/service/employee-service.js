@@ -1,5 +1,6 @@
 const employeeModel = require('../models/employee-model')
 const epmloyeesDto = require('../dto/employees-dto')
+const autoCompleteDto = require('../dto/autoComplete-dto')
 
 class employeeService {
 
@@ -35,6 +36,13 @@ class employeeService {
 
         employee.increase = !employee.increase
         await employee.save()
+    }
+
+    async autoComplete(name) {
+        const employees = await employeeModel.find({ name: { $regex: name, $options:'i'}}).limit(5)
+
+        const result = employees.map(e => new autoCompleteDto(e))
+        return result.map(e => ({value: e.name}))
     }
 }
 
